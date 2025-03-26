@@ -1,0 +1,8 @@
+fastapi==0.115.12
+uvicorn==0.34.0
+asyncpg==0.30.0
+sqlalchemy==2.0.39
+sqlmodel==0.0.24
+alembic==1.15.1
+python-dotenv==1.1.0
+uuid==1.30
