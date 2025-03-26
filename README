@@ -1,5 +1,6 @@
-Запустить контейнер с postgres
-```docker compose up -d```
+Запустить контейнер с postgres:
+
+```shell docker compose up -d
 Применить миграции
 ```alembic upgrade head```
 Запустить веб сервер
