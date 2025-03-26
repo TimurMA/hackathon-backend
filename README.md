@@ -6,7 +6,7 @@ cd skillsync-backend
 ### Запустить контейнер с postgres:
 
 ```
-shell docker compose up -d
+docker compose up -d
 ```
 ### Применить миграции:
 
