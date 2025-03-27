@@ -8,3 +8,5 @@ alembic upgrade head
 
 To downgrade last migration
 alembic downgrade head-1
+
+ATTENTION: import model in env.py file before generating migration
