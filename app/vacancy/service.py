@@ -63,7 +63,6 @@ async def create_vacancy(vacancy_to_save: VacancySave, session: AsyncSession) ->
         raise HTTPException(status_code=500, detail="Error occurred while saving vacancy! " + \
             "Please inform administration or try later")
 
-    
 async def update_vacancy(vacancy_id: str, vacancy_to_update: VacancySave, session: AsyncSession) -> VacancyPublic:
     statement = select(Vacancy).where(Vacancy.id == vacancy_id).outerjoin(Location)
 
