@@ -17,7 +17,6 @@ async def get_all_vacancies_async(session: Session, vacancy_filter: VacancyFilte
 @vacancy_router.get("/{vacancy_id}")
 async def get_vacancy_by_id_async(vacancy_id: str, session: Session) -> VacancyPublic:
     return await get_vacancy_by_id(vacancy_id, session)
-    
 
 @vacancy_router.post("/create")
 async def create_vacancy_async(vacancy: VacancySave, session: Session) -> VacancyPublic:
