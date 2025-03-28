@@ -4,8 +4,6 @@ from fastapi_filter import FilterDepends, with_prefix
 from app.vacancy.models import Location, LocationBase, VacancyBase, Vacancy
 
 class LocationSave(LocationBase):
-    id: str | None = None
-    location_id: str | None = None
     def to_entity(self):
         return Location(
             country=self.country,
@@ -18,20 +16,19 @@ class LocationPublic(LocationBase):
     
     @staticmethod
     def init_scheme(location: Location):
-        id = location.id.hex
+        location_id = location.id.hex
         country = location.country
         region = location.region
         city = location.city
         return LocationPublic(
-            id=id,
+            id=location_id,
             country=country,
             region=region,
             city=city
         )
 
 class VacancySave(VacancyBase):
-    id: str | None = None
-    location: LocationSave 
+    location: LocationSave
     def to_entity(self):
         return Vacancy(
             name=self.name,
@@ -47,14 +44,14 @@ class VacancyPublic(VacancyBase):
     
     @staticmethod
     def init_scheme(vacancy: Vacancy):
-        id = vacancy.id.hex
+        vacancy_id = vacancy.id.hex
         location_id = vacancy.location_id.hex
         location = LocationPublic.init_scheme(vacancy.location)
         description = vacancy.description
         name = vacancy.name
         url = vacancy.url
         return VacancyPublic(
-            id=id, 
+            id=vacancy_id,
             name=name,
             description=description,
             url=url,

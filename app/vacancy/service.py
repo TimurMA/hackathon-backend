@@ -1,21 +1,24 @@
-from typing import Sequence
-from fastapi import HTTPException
 import logging
+
+from typing import Sequence, cast
+from fastapi import HTTPException
+from sqlalchemy import Select
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
-from uuid import UUID
 
 from app.vacancy.models import Vacancy, Location
 from app.vacancy.schemas import VacancyPublic, VacancyFilter, VacancySave, LocationSave, LocationPublic
 
 async def _get_or_create_location(session: AsyncSession, location_data: LocationSave) -> Location:
-        existing = await session.exec(
-            select(Location).where(
+        statement = select(Location).where(
                 Location.country == location_data.country,
                 Location.region == location_data.region,
                 Location.city == location_data.city
             )
-        )
+
+        statement = cast(Select[Location], statement)
+
+        existing = await session.exec(statement)
         existing = existing.first()
         
         if existing:
@@ -32,10 +35,8 @@ async def get_all_vacancies(session: AsyncSession, vacancy_filter: VacancyFilter
     result = await session.exec(statement)
     return list(map(VacancyPublic.init_scheme, result.all()))
 
-async def get_vacancy_by_id(id: str, session: AsyncSession) -> VacancyPublic:
-    uuid = UUID(id)
-    
-    statement = select(Vacancy).where(Vacancy.id == uuid).outerjoin(Location)
+async def get_vacancy_by_id(vacancy_id: str, session: AsyncSession) -> VacancyPublic:
+    statement = select(Vacancy).where(Vacancy.id == vacancy_id).outerjoin(Location)
     
     result = await session.exec(statement)
     result = result.first()
@@ -51,6 +52,7 @@ async def create_vacancy(vacancy_to_save: VacancySave, session: AsyncSession) ->
         vacancy = vacancy_to_save.to_entity()
         vacancy.location_id = location.id
         vacancy.location = location
+
         session.add(vacancy)
         await session.commit()
         await session.refresh(vacancy)
@@ -62,40 +64,42 @@ async def create_vacancy(vacancy_to_save: VacancySave, session: AsyncSession) ->
             "Please inform administration or try later")
 
     
-async def update_vacancy(vacancy_to_update: VacancySave, session: AsyncSession) -> VacancyPublic:
-    uuid = UUID(vacancy_to_update.id)
-    statement = select(Vacancy).where(Vacancy.id == uuid).outerjoin(Location)
-    
+async def update_vacancy(vacancy_id: str, vacancy_to_update: VacancySave, session: AsyncSession) -> VacancyPublic:
+    statement = select(Vacancy).where(Vacancy.id == vacancy_id).outerjoin(Location)
+
     vacancy = await session.exec(statement)
-    vacancy = vacancy.first()
-    
+    vacancy = vacancy.one()
+    print(vacancy)
     if vacancy is None:
         raise HTTPException(status_code=404, detail="Not Found!")
-    old_location = vacancy.location
-    vacancy = vacancy_to_update.to_entity()
+
+    location = vacancy.location
     try:
-        if not (vacancy_to_update.location.city == old_location.city or \
-                vacancy_to_update.location.region == old_location.region or \
-                vacancy_to_update.location.country == old_location.country):
+        if not (vacancy_to_update.location.city == location.city or
+                vacancy_to_update.location.region == location.region or
+                vacancy_to_update.location.country == location.country):
+
             location = await _get_or_create_location(session, vacancy_to_update.location)
-            old_location = location
-            vacancy.location_id = location.id
-        
+
+        vacancy.location_id = location.id
+        vacancy.url = vacancy_to_update.url
+        vacancy.name = vacancy_to_update.name
+        vacancy.description = vacancy_to_update.description
+
         session.add(vacancy)
         await session.commit()
         await session.refresh(vacancy)
-        
-        vacancy.location = old_location
+
+
         
         return VacancyPublic.init_scheme(vacancy)
     except Exception as e:
-        
+        logging.error(e)
         raise HTTPException(status_code=500, detail="Error occurred while saving vacancy! " + \
             "Please inform administration or try later")
     
-async def delete_vacancy(id: str, session: AsyncSession) -> VacancyPublic:
-    uuid = UUID(id)
-    statement = select(Vacancy).where(Vacancy.id == uuid).outerjoin(Location)
+async def delete_vacancy(vacancy_id: str, session: AsyncSession):
+    statement = select(Vacancy).where(Vacancy.id == vacancy_id).outerjoin(Location)
     
     vacancy = await session.exec(statement)
     vacancy = vacancy.first()

@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from .db import init_db, close_connection
+from app.db import init_db, close_connection
 
-from .vacancy.routes import vacancy
+from app.vacancy.routes import vacancy_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -13,7 +13,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-app.include_router(router=vacancy)
+app.include_router(router=vacancy_router)
 
 @app.get("/")
 async def root():
