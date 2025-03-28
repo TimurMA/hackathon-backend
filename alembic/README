@@ -3,10 +3,10 @@ Generic single-database configuration with an async dbapi.
 To generate migration:
 alembic revision --autogenerate -m "{name_of_migration}"
 
-To created migration commit migration
+To created migration commit migration:
 alembic upgrade head
 
-To downgrade last migration
+To downgrade last migration:
 alembic downgrade head-1
 
 ATTENTION: import model in env.py file before generating migration
