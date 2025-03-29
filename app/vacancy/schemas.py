@@ -32,7 +32,7 @@ class VacancySave(VacancyBase):
     def to_entity(self):
         return Vacancy(
             name=self.name,
-            description=self.name,
+            description=self.description,
             url=self.url,
         )
     
