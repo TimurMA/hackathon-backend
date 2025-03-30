@@ -60,8 +60,8 @@ async def create_vacancy(vacancy_to_save: VacancySave, session: AsyncSession) ->
         return VacancyPublic.init_scheme(vacancy)
     except Exception as e:
         logging.error(e)
-        raise HTTPException(status_code=500, detail="Error occurred while saving vacancy! " + \
-            "Please inform administration or try later")
+        raise HTTPException(status_code=500, detail="Error occurred while saving vacancy! " +
+                                                    "Please inform administration or try later")
 
 async def update_vacancy(vacancy_id: str, vacancy_to_update: VacancySave, session: AsyncSession) -> VacancyPublic:
     statement = select(Vacancy).where(Vacancy.id == vacancy_id).outerjoin(Location)
@@ -70,6 +70,7 @@ async def update_vacancy(vacancy_id: str, vacancy_to_update: VacancySave, sessio
     vacancy = vacancy.one()
     print(vacancy)
     if vacancy is None:
+        await session.rollback()
         raise HTTPException(status_code=404, detail="Not Found!")
 
     location = vacancy.location
@@ -88,14 +89,13 @@ async def update_vacancy(vacancy_id: str, vacancy_to_update: VacancySave, sessio
         session.add(vacancy)
         await session.commit()
         await session.refresh(vacancy)
-
-
         
         return VacancyPublic.init_scheme(vacancy)
     except Exception as e:
         logging.error(e)
-        raise HTTPException(status_code=500, detail="Error occurred while saving vacancy! " + \
-            "Please inform administration or try later")
+        await session.rollback()
+        raise HTTPException(status_code=500, detail="Error occurred while saving vacancy! " +
+                                                    "Please inform administration or try later")
     
 async def delete_vacancy(vacancy_id: str, session: AsyncSession):
     statement = select(Vacancy).where(Vacancy.id == vacancy_id).outerjoin(Location)
@@ -104,10 +104,17 @@ async def delete_vacancy(vacancy_id: str, session: AsyncSession):
     vacancy = vacancy.first()
     
     if vacancy is None:
+        await session.rollback()
         raise HTTPException(status_code=404, detail="Not Found!")
     
-    await session.delete(vacancy)
-    await session.commit()
+    try:
+        await session.delete(vacancy)
+        await session.commit()
+    except Exception as e:
+        logging.error(e)
+        await session.rollback()
+        raise HTTPException(status_code=500, detail="Error occurred while saving vacancy! " +
+                                                    "Please inform administration or try later")
     
     
     

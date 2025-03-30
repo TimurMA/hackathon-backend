@@ -14,8 +14,9 @@ from utils.get_database_url import get_database_url
 # import here sqlmodel to autogenerate model scheme
 
 from app.vacancy.models import Vacancy, Location
+from app.competence.models import Competence
+from app.user.models import User, UserCompetence
 from app.user.models import User
-from app.skill.models import Skill, UserSkill
 
 
 DATABASE_URL = get_database_url()
