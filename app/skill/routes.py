@@ -32,6 +32,6 @@ async def update_skill_async(skill_id: str, skill: SkillSave, session: Session) 
     return await update_skill(skill_id, skill, session)
 
 
-@skill_router.delete("/{skill_id}")
+@skill_router.delete("delete/{skill_id}")
 async def delete_skill_async(skill_id: str, session: Session):
     return await delete_skill(skill_id, session)
