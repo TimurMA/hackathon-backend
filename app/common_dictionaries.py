@@ -1,6 +1,6 @@
 #ВРЕМЕННОЕ РЕШЕНИЕ
 #СПИСОК КОМПИТЕНЦИЙ И ИХ РАСШИФРОВКА
-listOfSlills=[
+competence_list=[
     "SQL",
     "NoSQL",
     "parallel processing",
