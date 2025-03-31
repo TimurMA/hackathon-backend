@@ -12,7 +12,7 @@ from app.common_dictionaries import competence_list
 class DocumentReader:
     def __init__(self):
         #загрузка модели
-        self.nlp = spaCyLayout(аload("ru_core_news_sm"))
+        self.nlp = spaCyLayout(load("ru_core_news_sm"))
     # Метод для чтения информации с документа, возвращает два словаря, первый компетенции, второй доп. информация
     def read_document(self, document: DoclingDocument | bytes):
         # Загрузка документа в spaCy
