@@ -7,3 +7,5 @@ alembic==1.15.1
 python-dotenv==1.1.0
 uuid==1.30
 fastapi_filter==2.0.1
+spacy-layout==0.0.12
+https://github.com/explosion/spacy-models/releases/download/ru_core_news_sm-3.8.0/ru_core_news_sm-3.8.0-py3-none-any.whl
