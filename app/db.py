@@ -1,8 +1,7 @@
-from typing import Annotated, Any, AsyncGenerator
+from typing import Annotated, AsyncGenerator
 from fastapi import Depends
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
-from sqlalchemy.orm import sessionmaker
 
 from utils.get_database_url import get_database_url
 

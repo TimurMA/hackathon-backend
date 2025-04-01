@@ -3,6 +3,8 @@ from sqlalchemy import UniqueConstraint, Column
 from sqlalchemy.dialects.postgresql import TEXT
 from uuid import uuid4, UUID
 
+from app.company.models import Company
+
 
 class LocationBase(SQLModel):
     country: str = Field(index=True)
@@ -32,10 +34,12 @@ class Vacancy(VacancyBase, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     
     location_id: UUID = Field(foreign_key="locations.id")
+    company_id: UUID = Field(foreign_key="companies.id")
 
 
     location: Location = Relationship(back_populates="vacancies", sa_relationship_kwargs={'lazy': 'selectin'})
-    
+    company: Company = Relationship(back_populates="vacancies", sa_relationship_kwargs={'lazy': 'selectin'})
+
 
 
     
