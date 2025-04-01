@@ -1,8 +1,8 @@
 from app.user.models import UserBase, UserCompetenceBase, UserCompetence, User
-from app.competence.schemas import  CompetencePublic, CompetenceFilter
-from app.competence.models import CompetenceBase, Competence
+from app.competence.schemas import CompetenceFilter
+from app.competence.models import CompetenceBase
 
-from fastapi_filter import *
+from fastapi_filter import FilterDepends, with_prefix
 from fastapi_filter.contrib.sqlalchemy import Filter
 
 class UserCompetencePublic(CompetenceBase, UserCompetenceBase):
