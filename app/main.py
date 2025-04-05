@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
+from app.company.routes import company_router
 from app.db import init_db, close_connection
 from app.competence.routes import competence_router
 from app.nlp import init_nlp_module
@@ -19,6 +20,7 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(router=vacancy_router)
 app.include_router(router=competence_router)
+app.include_router(router=company_router)
 # app.include_router(router=user_router)
 
 @app.get("/")
