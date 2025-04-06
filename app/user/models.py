@@ -1,11 +1,10 @@
-from decimal import Decimal
-
-from sqlalchemy import Index, Column, DECIMAL
+from sqlalchemy import PrimaryKeyConstraint
 from typing import Optional
 from uuid import uuid4, UUID
 from sqlmodel import SQLModel, Field, Relationship
 
-from app.competence.models import Competence
+from app.competence.models import Competence, CompetenceLevel
+
 
 class UserBase(SQLModel):
     first_name: str = Field(index=True)
@@ -20,19 +19,16 @@ class User(UserBase, table=True):
     competencies: list["UserCompetence"] = Relationship(back_populates="user",sa_relationship_kwargs={'lazy': 'selectin'})
     is_deleted: bool = Field(default=False, index=True)
 
-class UserCompetenceBase(SQLModel):
-    level: Decimal = Field(ge=0, le=10, sa_column=Column(DECIMAL(5, 3)))
-
-class UserCompetence(UserCompetenceBase, table=True):
+class UserCompetence(CompetenceLevel, table=True):
     __tablename__ = "user_competencies"
-    competence_id: UUID = Field(primary_key=True, foreign_key="competencies.id")
-    user_id: UUID = Field(primary_key=True, foreign_key="users.id")
+    competence_id: str = Field(foreign_key="competencies.id")
+    user_id: UUID = Field(foreign_key="users.id")
 
     competence: Competence = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
-    user: User = Relationship(back_populates="user_competencies", sa_relationship_kwargs={'lazy': 'noload'})
+    user: User = Relationship(back_populates="competencies", sa_relationship_kwargs={'lazy': 'noload'})
 
     __table_args__ = (
-        Index("id_user_competence", "user_id", "competence_id", unique=True),
+        PrimaryKeyConstraint("user_id", "competence_id", name="user_competence_pk"),
     )
 
 

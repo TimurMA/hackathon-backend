@@ -1,9 +1,10 @@
 from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy import UniqueConstraint, Column
+from sqlalchemy import UniqueConstraint, Column, PrimaryKeyConstraint
 from sqlalchemy.dialects.postgresql import TEXT
 from uuid import uuid4, UUID
 
 from app.company.models import Company
+from app.competence.models import Competence, CompetenceLevel
 
 
 class LocationBase(SQLModel):
@@ -39,6 +40,19 @@ class Vacancy(VacancyBase, table=True):
 
     location: Location = Relationship(back_populates="vacancies", sa_relationship_kwargs={'lazy': 'selectin'})
     company: Company = Relationship(back_populates="vacancies", sa_relationship_kwargs={'lazy': 'selectin'})
+
+    vacancy_competencies: list["VacancyCompetence"] = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
+
+class VacancyCompetence(CompetenceLevel, table=True):
+    __tablename__ = "vacancy_competencies"
+    competence_id: str = Field(primary_key=True, foreign_key="competencies.id")
+    vacancy_id: UUID = Field(primary_key=True, foreign_key="vacancies.id")
+
+    competence: Competence = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
+
+    __table_args__ = (
+        PrimaryKeyConstraint("vacancy_id", "competence_id", name="vacancy_competence_pk"),
+    )
 
 
 

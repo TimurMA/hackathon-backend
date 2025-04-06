@@ -13,11 +13,11 @@ class CompetenceSave(CompetenceBase):
 class CompetencePublic(CompetenceBase):
     id: str
     @staticmethod
-    def init_scheme(skill: Competence):
-        skill_id = skill.id.hex
-        name = skill.name,
+    def init_scheme(competence: Competence):
+        competence_id = competence.id
+        name = competence.name,
         return CompetencePublic(
-            id=skill_id,
+            id=competence_id,
             name=name
         )
 
