@@ -1,14 +1,19 @@
+from decimal import Decimal
+from uuid import UUID
+
 from fastapi_filter.contrib.sqlalchemy import Filter
 from fastapi_filter import FilterDepends, with_prefix
+from sqlmodel import SQLModel
 
-from app.vacancy.models import Location, LocationBase, VacancyBase, Vacancy
+from app.competence.models import CompetenceBase
+from app.vacancy.models import Location, LocationBase, VacancyBase, Vacancy, VacancyCompetence, CompetenceLevel
 
 class LocationSave(LocationBase):
     def to_entity(self):
         return Location(
-            country=self.country,
-            region=self.region,
-            city=self.city
+            country = self.country,
+            region = self.region,
+            city = self.city
         )
         
 class LocationPublic(LocationBase):
@@ -16,24 +21,45 @@ class LocationPublic(LocationBase):
     
     @staticmethod
     def init_scheme(location: Location):
-        location_id = location.id.hex
-        country = location.country
-        region = location.region
-        city = location.city
         return LocationPublic(
-            id=location_id,
-            country=country,
-            region=region,
-            city=city
+            id = location.id.hex,
+            country = location.country,
+            region = location.region,
+            city = location.city
+        )
+
+class VacancyCompetenceSave(SQLModel):
+    competence_id: str
+    vacancy_id: str
+    level: float
+
+    def to_entity(self):
+        return VacancyCompetence(
+            competence_id = self.competence_id,
+            vacancy_id = UUID(self.vacancy_id),
+            level = Decimal(f"{self.level}")
+        )
+
+class VacancyCompetencePublic(CompetenceLevel, CompetenceBase):
+    competence_id: str
+    user_id: str
+
+    @staticmethod
+    def init_scheme(vacancy_competence: VacancyCompetence):
+        return VacancyCompetencePublic(
+            name = vacancy_competence.competence.name,
+            competence_id = vacancy_competence.competence_id,
+            vacancy_id = vacancy_competence.vacancy_id.hex,
+            level = vacancy_competence.level
         )
 
 class VacancySave(VacancyBase):
     location: LocationSave
     def to_entity(self):
         return Vacancy(
-            name=self.name,
-            description=self.description,
-            url=self.url,
+            name = self.name,
+            description = self.description,
+            url = self.url,
         )
     
 
@@ -41,22 +67,19 @@ class VacancyPublic(VacancyBase):
     id: str
     location: LocationPublic
     location_id: str
+
+    vacancy_competencies: list["VacancyCompetencePublic"]
     
     @staticmethod
     def init_scheme(vacancy: Vacancy):
-        vacancy_id = vacancy.id.hex
-        location_id = vacancy.location_id.hex
-        location = LocationPublic.init_scheme(vacancy.location)
-        description = vacancy.description
-        name = vacancy.name
-        url = vacancy.url
         return VacancyPublic(
-            id=vacancy_id,
-            name=name,
-            description=description,
-            url=url,
-            location_id=location_id,
-            location=location
+            id = vacancy.id.hex,
+            name = vacancy.name,
+            description = vacancy.description,
+            url = vacancy.url,
+            location_id = vacancy.location_id,
+            location = vacancy.location,
+            vacancy_competencies = list(map(VacancyCompetencePublic.init_scheme, vacancy.vacancy_competencies))
         )
  
 
