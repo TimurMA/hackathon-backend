@@ -1,0 +1,196 @@
+{
+  "lang":"ru",
+  "name":"pipeline",
+  "version":"0.0.0",
+  "spacy_version":">=3.8.4,<3.9.0",
+  "description":"",
+  "author":"",
+  "email":"",
+  "url":"",
+  "license":"",
+  "spacy_git_version":"85cc763",
+  "vectors":{
+    "width":0,
+    "vectors":0,
+    "keys":0,
+    "name":null,
+    "mode":"default"
+  },
+  "labels":{
+    "tok2vec":[
+
+    ],
+    "ner":[
+      "Hadoop",
+      "Image and video analysis",
+      "ML for generation image and video",
+      "ML for generation natural language",
+      "ML methods",
+      "ML on big data",
+      "NLP",
+      "NoSQL",
+      "Programming language",
+      "SQL",
+      "data buses",
+      "data preprocessing",
+      "data streaming",
+      "evaluating the work of AI methods",
+      "information search",
+      "methodology for developing AI solutions",
+      "optimization methods",
+      "parallel computing to speed up ML",
+      "parallel processing",
+      "recommendation systems",
+      "reinforcement learning",
+      "statistical methods",
+      "the basics of deep learning",
+      "trends AI",
+      "working with a distributed cluster system"
+    ]
+  },
+  "pipeline":[
+    "tok2vec",
+    "ner"
+  ],
+  "components":[
+    "tok2vec",
+    "ner"
+  ],
+  "disabled":[
+
+  ],
+  "performance":{
+    "ents_f":1.0,
+    "ents_p":1.0,
+    "ents_r":1.0,
+    "ents_per_type":{
+      "Programming language":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "SQL":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "NoSQL":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "Hadoop":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "data buses":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "parallel processing":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "data preprocessing":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "ML on big data":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "working with a distributed cluster system":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "parallel computing to speed up ML":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "reinforcement learning":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "ML for generation image and video":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "the basics of deep learning":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "NLP":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "ML for generation natural language":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "Image and video analysis":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "recommendation systems":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "information search":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "optimization methods":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "ML methods":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "evaluating the work of AI methods":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "statistical methods":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "methodology for developing AI solutions":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "trends AI":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "data streaming":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      }
+    },
+    "tok2vec_loss":257.1213505115,
+    "ner_loss":45.9851827055
+  }
+}

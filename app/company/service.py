@@ -1,0 +1,104 @@
+import logging
+from typing import Sequence
+
+from sqlalchemy import Select, delete
+from fastapi import HTTPException
+from sqlmodel import select, cast, and_
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from app.company.models import Company
+from app.company.schemas import CompanyPublic, CompanyFilter, CompanySave
+from app.user.models import User
+from app.vacancy.models import Vacancy
+
+async def get_company_by_id(company_id: str, session: AsyncSession) -> CompanyPublic:
+    query = select(Company).where(Company.id == company_id)
+    query = cast(Select[Company], query)
+    result = await session.exec(query)
+    company = result.scalar_one_or_none()
+    if not company:
+        raise HTTPException(status_code=404, detail="По результатам запроса ничего не было найдено.")
+    return CompanyPublic.init_scheme(company)
+
+
+async def get_all_companies(session: AsyncSession, company_filter: CompanyFilter) -> Sequence[CompanyPublic]:
+    try:
+        query = company_filter.filter(select(Company))
+        result = await session.exec(query)
+        return list(map(CompanyPublic.init_scheme, result.all()))
+    except Exception as e:
+        logging.error(e)
+        raise HTTPException(status_code=500, detail="Ошибка при получении компаний.")
+
+async def add_company(company_to_save: CompanySave, session: AsyncSession) -> CompanyPublic:
+    query = select(Company).where(Company.name == company_to_save.name)
+    query = cast(Select[Company], query)
+    existing_company = await session.exec(query)
+    if existing_company.first():
+        await session.rollback()
+        raise HTTPException(status_code=400, detail="Компания с таким названием уже существует.")
+    try:
+        company = company_to_save.to_entity()
+        if company_to_save.hr_id:
+            hr = await session.get(User, company_to_save.hr_id)
+            if not hr:
+                await session.rollback()
+                raise HTTPException(status_code=404, detail="Пользователь не найден.")
+            company.HR = hr
+        session.add(company)
+        await session.commit()
+        await session.refresh(company)
+        return CompanyPublic.init_scheme(company)
+    except Exception as e:
+        await session.rollback()
+        logging.error(e)
+        raise HTTPException(status_code=500, detail="Ошибка при добавлении компании.")
+
+
+async def update_company(company_id: str, company_to_update: CompanySave, session: AsyncSession) -> CompanyPublic:
+    query = select(Company).where(Company.id == company_id)
+    query = cast(Select[Company], query)
+    result = await session.exec(query)
+    company = result.scalar_one_or_none()
+    if not company:
+        await session.rollback()
+        raise HTTPException(status_code=404, detail="Компания не найдена.")
+    if company.name != company_to_update.name:
+        await session.rollback()
+        raise HTTPException(status_code=400, detail="Компания с таким названием уже существует.")
+    try:
+        company.name = company_to_update.name
+        if company_to_update.hr_id:
+            hr = await session.get(User, company_to_update.hr_id)
+            if not hr:
+                await session.rollback()
+                raise HTTPException(status_code=404, detail="Пользователь не найден.")
+            company.HR = hr
+        else:
+            company.HR = None
+        session.add(company)
+        await session.commit()
+        await session.refresh(company)
+        return CompanyPublic.init_scheme(company)
+    except Exception as e:
+        await session.rollback()
+        logging.error(e)
+        raise HTTPException(status_code=500, detail="Ошибка при обновлении компании.")
+
+
+async def delete_company(company_id: str, session: AsyncSession):
+    query = select(Company).where(Company.id == company_id)
+    query = cast(Select[Company], query)
+    result = await session.exec(query)
+    company = result.scalar_one_or_none()
+    if not company:
+        await session.rollback()
+        raise HTTPException(status_code=404, detail="Компания не найдена.")
+    try:
+        await session.delete(company)
+        await session.commit()
+    except Exception as e:
+        await session.rollback()
+        logging.error(e)
+        raise HTTPException(status_code=500, detail="Ошибка при удалении компании.")
+

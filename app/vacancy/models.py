@@ -1,7 +1,10 @@
 from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy import UniqueConstraint, Column
+from sqlalchemy import UniqueConstraint, Column, PrimaryKeyConstraint
 from sqlalchemy.dialects.postgresql import TEXT
 from uuid import uuid4, UUID
+
+from app.company.models import Company
+from app.competence.models import Competence, CompetenceLevel
 
 
 class LocationBase(SQLModel):
@@ -17,7 +20,7 @@ class Location(LocationBase, table=True):
         UniqueConstraint("country", "region", "city", name="uq_location_composite"),
     )
     
-    vacancies: list["Vacancy"] = Relationship(back_populates="location", sa_relationship_kwargs={'lazy': 'selectin'})
+    vacancies: list["Vacancy"] = Relationship(back_populates="location", sa_relationship_kwargs={'lazy': 'noload'})
 
 
 
@@ -32,10 +35,26 @@ class Vacancy(VacancyBase, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     
     location_id: UUID = Field(foreign_key="locations.id")
+    company_id: UUID = Field(foreign_key="companies.id")
 
 
     location: Location = Relationship(back_populates="vacancies", sa_relationship_kwargs={'lazy': 'selectin'})
-    
+    company: Company = Relationship(back_populates="vacancies", sa_relationship_kwargs={'lazy': 'noload'})
+
+    vacancy_competencies: list["VacancyCompetence"] = Relationship(back_populates="vacancy", sa_relationship_kwargs={'lazy': 'selectin'})
+
+class VacancyCompetence(CompetenceLevel, table=True):
+    __tablename__ = "vacancy_competencies"
+    competence_id: str = Field(primary_key=True, foreign_key="competencies.id")
+    vacancy_id: UUID = Field(primary_key=True, foreign_key="vacancies.id")
+
+    competence: Competence = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
+    vacancy: Vacancy = Relationship(back_populates="vacancy_competencies", sa_relationship_kwargs={'lazy': 'noload'})
+
+    __table_args__ = (
+        PrimaryKeyConstraint("vacancy_id", "competence_id", name="vacancy_competence_pk"),
+    )
+
 
 
     
