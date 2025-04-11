@@ -5,13 +5,15 @@ from app.resume.models import ResumeBase, Resume, ResumeCompetence
 class ResumeCompetencePublic(CompetenceLevel):
     name: str
     id: str
+    resume_id: str
 
     @staticmethod
     def init_scheme(resume_competence: ResumeCompetence):
         return ResumeCompetencePublic(
             id = resume_competence.competence_id,
             name = resume_competence.competence.name,
-            level = resume_competence.level
+            level = resume_competence.level,
+            resume_id = resume_competence.resume_id
         )
 
 class ResumePublic(ResumeBase):

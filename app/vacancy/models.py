@@ -20,7 +20,7 @@ class Location(LocationBase, table=True):
         UniqueConstraint("country", "region", "city", name="uq_location_composite"),
     )
     
-    vacancies: list["Vacancy"] = Relationship(back_populates="location", sa_relationship_kwargs={'lazy': 'selectin'})
+    vacancies: list["Vacancy"] = Relationship(back_populates="location", sa_relationship_kwargs={'lazy': 'noload'})
 
 
 
@@ -39,9 +39,9 @@ class Vacancy(VacancyBase, table=True):
 
 
     location: Location = Relationship(back_populates="vacancies", sa_relationship_kwargs={'lazy': 'selectin'})
-    company: Company = Relationship(back_populates="vacancies", sa_relationship_kwargs={'lazy': 'selectin'})
+    company: Company = Relationship(back_populates="vacancies", sa_relationship_kwargs={'lazy': 'noload'})
 
-    vacancy_competencies: list["VacancyCompetence"] = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
+    vacancy_competencies: list["VacancyCompetence"] = Relationship(back_populates="vacancy", sa_relationship_kwargs={'lazy': 'selectin'})
 
 class VacancyCompetence(CompetenceLevel, table=True):
     __tablename__ = "vacancy_competencies"
@@ -49,6 +49,7 @@ class VacancyCompetence(CompetenceLevel, table=True):
     vacancy_id: UUID = Field(primary_key=True, foreign_key="vacancies.id")
 
     competence: Competence = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
+    vacancy: Vacancy = Relationship(back_populates="vacancy_competencies", sa_relationship_kwargs={'lazy': 'noload'})
 
     __table_args__ = (
         PrimaryKeyConstraint("vacancy_id", "competence_id", name="vacancy_competence_pk"),

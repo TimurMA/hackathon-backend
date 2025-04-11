@@ -47,7 +47,7 @@ class UserPublic(UserBase):
             email = user.email,
             phone = user.phone,
             is_deleted = user.is_deleted,
-            competencies = list(map(UserCompetencePublic.init_scheme, user.user_competence))
+            competencies = list(map(UserCompetencePublic.init_scheme, user.user_competencies))
         )
 
 class UserSave(UserBase):

@@ -16,7 +16,7 @@ class UserBase(SQLModel):
 class User(UserBase, table=True):
     __tablename__ = "users"
     id: UUID = Field(default_factory=uuid4, primary_key=True)
-    competencies: list["UserCompetence"] = Relationship(back_populates="user",sa_relationship_kwargs={'lazy': 'selectin'})
+    user_competencies: list["UserCompetence"] = Relationship(back_populates="user",sa_relationship_kwargs={'lazy': 'selectin'})
     is_deleted: bool = Field(default=False, index=True)
 
 class UserCompetence(CompetenceLevel, table=True):
@@ -25,7 +25,7 @@ class UserCompetence(CompetenceLevel, table=True):
     user_id: UUID = Field(foreign_key="users.id")
 
     competence: Competence = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
-    user: User = Relationship(back_populates="competencies", sa_relationship_kwargs={'lazy': 'noload'})
+    user: User = Relationship(back_populates="user_competencies", sa_relationship_kwargs={'lazy': 'noload'})
 
     __table_args__ = (
         PrimaryKeyConstraint("user_id", "competence_id", name="user_competence_pk"),
