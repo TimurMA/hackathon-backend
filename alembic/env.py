@@ -13,8 +13,11 @@ from alembic import context
 from utils.get_database_url import get_database_url
 # import here sqlmodel to autogenerate model scheme
 
-from app.vacancy.models import Vacancy, Location
-
+from app.vacancy.models import Vacancy, Location, VacancyCompetence
+from app.competence.models import Competence
+from app.user.models import User, UserCompetence
+from app.resume.models import Resume, ResumeCompetence
+from app.company.models import Company
 
 DATABASE_URL = get_database_url()
 
