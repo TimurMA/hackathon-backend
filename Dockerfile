@@ -43,7 +43,7 @@ RUN echo "DB: $DB" && \
     echo "DB_USER: $DB_USER" && \
     echo "DB_NAME: $DB_NAME" && \
     echo "DB_HOST: $DB_HOST" && \
-    echo "DB_PORT: $DB_PORT" \
+    echo "DB_PORT: $DB_PORT"
 
 
 EXPOSE 8080
