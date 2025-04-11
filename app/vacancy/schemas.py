@@ -30,13 +30,12 @@ class LocationPublic(LocationBase):
 
 class VacancyCompetenceSave(SQLModel):
     competence_id: str
-    vacancy_id: str
     level: float
 
-    def to_entity(self):
+    def to_entity(self, vacancy_id):
         return VacancyCompetence(
+            vacancy_id = UUID(vacancy_id),
             competence_id = self.competence_id,
-            vacancy_id = UUID(self.vacancy_id),
             level = Decimal(f"{self.level}")
         )
 
@@ -55,11 +54,15 @@ class VacancyCompetencePublic(CompetenceLevel, CompetenceBase):
 
 class VacancySave(VacancyBase):
     location: LocationSave
+    company_id: str
+    vacancy_competencies: list[VacancyCompetenceSave] = []
     def to_entity(self):
         return Vacancy(
             name = self.name,
             description = self.description,
             url = self.url,
+            company_id = self.company_id,
+            vacancy_competencies = [vacancy_competence.to_entity() for vacancy_competence in self.vacancy_competencies]
         )
     
 
@@ -67,6 +70,7 @@ class VacancyPublic(VacancyBase):
     id: str
     location: LocationPublic
     location_id: str
+    company_id: str
 
     vacancy_competencies: list["VacancyCompetencePublic"]
     
@@ -78,7 +82,8 @@ class VacancyPublic(VacancyBase):
             description = vacancy.description,
             url = vacancy.url,
             location_id = vacancy.location_id,
-            location = vacancy.location,
+            company_id = vacancy.id,
+            location = LocationPublic.init_scheme(vacancy.location),
             vacancy_competencies = list(map(VacancyCompetencePublic.init_scheme, vacancy.vacancy_competencies))
         )
  
