@@ -1,7 +1,6 @@
-from spacy_layout import spaCyLayout
 from spacy.matcher import Matcher
 from spacy import load
-from docling_core.types.doc.document import DoclingDocument
+import pdfplumber
 # Зависимости, которых может и не быть
 # pip install spacy-layout
 ################################################################
@@ -10,11 +9,16 @@ from docling_core.types.doc.document import DoclingDocument
 class DocumentReader:
     def __init__(self):
         #загрузка модели
-        self.nlp = spaCyLayout(load("app/nlp_document/model/model-best"))
+        self.nlp = load("app/nlp_document/model/model-best")
     # Метод для чтения информации с документа, возвращает два словаря, первый компетенции, второй доп. информация
-    def read_document(self, document: DoclingDocument | bytes, competence_list: list[str]):
+    def read_document(self, document: bytes, competence_list: list[str]):
         # Загрузка документа в spaCy
-        doc = self.nlp(document)
+        with pdfplumber.open(document) as pdf:
+            text = []
+            for page in pdf.pages:
+                text.append(page.extract_text() or "")
+
+        doc = self.nlp("\n".join(text))
         # Нахождение всех компетенций в документе
         competences={}
         for token in doc.ents:

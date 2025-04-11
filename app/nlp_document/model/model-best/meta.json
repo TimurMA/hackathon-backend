@@ -31,7 +31,6 @@
       "NoSQL",
       "Programming language",
       "SQL",
-      "data buses",
       "data preprocessing",
       "data streaming",
       "evaluating the work of AI methods",
@@ -60,137 +59,132 @@
 
   ],
   "performance":{
-    "ents_f":1.0,
-    "ents_p":1.0,
-    "ents_r":1.0,
+    "ents_f":0.5188679245,
+    "ents_p":0.5670103093,
+    "ents_r":0.4782608696,
     "ents_per_type":{
-      "Programming language":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
+      "ML methods":{
+        "p":0.75,
+        "r":0.5625,
+        "f":0.6428571429
+      },
+      "methodology for developing AI solutions":{
+        "p":0.4230769231,
+        "r":0.4074074074,
+        "f":0.4150943396
       },
       "SQL":{
         "p":1.0,
-        "r":1.0,
-        "f":1.0
+        "r":0.5714285714,
+        "f":0.7272727273
       },
-      "NoSQL":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "Hadoop":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "data buses":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "parallel processing":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "data preprocessing":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
+      "statistical methods":{
+        "p":0.375,
+        "r":0.5,
+        "f":0.4285714286
       },
       "ML on big data":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "working with a distributed cluster system":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "parallel computing to speed up ML":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "reinforcement learning":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
+        "p":0.6,
+        "r":0.2727272727,
+        "f":0.375
       },
       "ML for generation image and video":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "the basics of deep learning":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
+        "p":0.6666666667,
+        "r":0.8,
+        "f":0.7272727273
       },
       "NLP":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
+        "p":0.0,
+        "r":0.0,
+        "f":0.0
+      },
+      "information search":{
+        "p":0.4,
+        "r":0.1176470588,
+        "f":0.1818181818
+      },
+      "trends AI":{
+        "p":0.5,
+        "r":0.125,
+        "f":0.2
+      },
+      "working with a distributed cluster system":{
+        "p":0.4285714286,
+        "r":0.375,
+        "f":0.4
+      },
+      "data streaming":{
+        "p":0.5384615385,
+        "r":0.7,
+        "f":0.6086956522
+      },
+      "parallel computing to speed up ML":{
+        "p":0.4117647059,
+        "r":0.7,
+        "f":0.5185185185
+      },
+      "data preprocessing":{
+        "p":0.3333333333,
+        "r":0.1428571429,
+        "f":0.2
+      },
+      "evaluating the work of AI methods":{
+        "p":0.5,
+        "r":0.4,
+        "f":0.4444444444
+      },
+      "parallel processing":{
+        "p":0.0,
+        "r":0.0,
+        "f":0.0
+      },
+      "optimization methods":{
+        "p":0.5555555556,
+        "r":0.4166666667,
+        "f":0.4761904762
+      },
+      "Hadoop":{
+        "p":0.4,
+        "r":0.6,
+        "f":0.48
       },
       "ML for generation natural language":{
         "p":1.0,
         "r":1.0,
         "f":1.0
       },
-      "Image and video analysis":{
-        "p":1.0,
+      "Programming language":{
+        "p":0.9166666667,
+        "r":0.88,
+        "f":0.8979591837
+      },
+      "reinforcement learning":{
+        "p":0.6666666667,
         "r":1.0,
-        "f":1.0
+        "f":0.8
+      },
+      "NoSQL":{
+        "p":0.8571428571,
+        "r":0.8571428571,
+        "f":0.8571428571
       },
       "recommendation systems":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
+        "p":0.0,
+        "r":0.0,
+        "f":0.0
       },
-      "information search":{
-        "p":1.0,
+      "the basics of deep learning":{
+        "p":0.5714285714,
         "r":1.0,
-        "f":1.0
+        "f":0.7272727273
       },
-      "optimization methods":{
+      "Image and video analysis":{
         "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "ML methods":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "evaluating the work of AI methods":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "statistical methods":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "methodology for developing AI solutions":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "trends AI":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
-      },
-      "data streaming":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
+        "r":0.6666666667,
+        "f":0.8
       }
     },
-    "tok2vec_loss":257.1213505115,
-    "ner_loss":45.9851827055
+    "tok2vec_loss":709.2949870617,
+    "ner_loss":426.5598217237
   }
 }
