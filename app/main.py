@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db import init_db, close_connection, init_common_competencies
+from app.company.routes import company_router
 from app.competence.routes import competence_router
 from app.resume.routes import resume_router
 from app.nlp import init_nlp_module
@@ -31,6 +32,7 @@ app.add_middleware(CORSMiddleware,
 
 app.include_router(router=vacancy_router)
 app.include_router(router=competence_router)
+app.include_router(router=company_router)
 app.include_router(router=resume_router)
 # app.include_router(router=user_router)
 
