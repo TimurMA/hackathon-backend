@@ -5,7 +5,7 @@ services:
   competence-sync-db:
     image: postgres:latest
     ports:
-      - "${DB_PORT}:5432"
+      - "${POSTGRES_PORT}:5432"
     env_file:
       - .env
     volumes:
