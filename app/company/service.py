@@ -1,9 +1,9 @@
 import logging
-from typing import Sequence
+from typing import Sequence, cast
 
-from sqlalchemy import Select, delete
+from sqlalchemy import Select
 from fastapi import HTTPException
-from sqlmodel import select, cast, and_
+from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.company.models import Company
@@ -15,7 +15,7 @@ async def get_company_by_id(company_id: str, session: AsyncSession) -> CompanyPu
     query = select(Company).where(Company.id == company_id)
     query = cast(Select[Company], query)
     result = await session.exec(query)
-    company = result.scalar_one_or_none()
+    company = result.first()
     if not company:
         raise HTTPException(status_code=404, detail="По результатам запроса ничего не было найдено.")
     return CompanyPublic.init_scheme(company)
@@ -38,22 +38,24 @@ async def add_company(company_to_save: CompanySave, session: AsyncSession) -> Co
         await session.rollback()
         raise HTTPException(status_code=400, detail="Компания с таким названием уже существует.")
 
-    hr = None
+    hr: User | None = None
     if company_to_save.hr_id is not None:
         try:
             hr = await session.get(User, {"id": company_to_save.hr_id})
         except Exception as e:
             logging.error(e)
-            raise HTTPException(status_code=400, detail="Bad hr_id")
+            raise HTTPException(status_code=400, detail="Некорректный id у hr")
 
-    if hr is None:
-        raise HTTPException(status_code=404, detail="HR не найден")
+        if hr is None:
+            raise HTTPException(status_code=404, detail="HR не найден")
+
 
     try:
 
         company = company_to_save.to_entity()
 
-        company.hr_id = hr.id
+        if hr:
+            company.hr_id = hr.id
 
         session.add(company)
         await session.commit()
@@ -69,7 +71,7 @@ async def update_company(company_id: str, company_to_update: CompanySave, sessio
     query = select(Company).where(Company.id == company_id)
     query = cast(Select[Company], query)
     result = await session.exec(query)
-    company = result.scalar_one_or_none()
+    company = result.first()
 
     hr: User | None = None
     if company_to_update.hr_id is not None:
@@ -77,10 +79,10 @@ async def update_company(company_id: str, company_to_update: CompanySave, sessio
             hr = await session.get(User, {"id": company_to_update.hr_id})
         except Exception as e:
             logging.error(e)
-            raise HTTPException(status_code=400, detail="Bad hr Id")
+            raise HTTPException(status_code=400, detail="Некорректный id у hr")
 
-    if hr is None:
-        raise HTTPException(status_code=404, detail="HR не найден")
+        if hr is None:
+            raise HTTPException(status_code=404, detail="HR не найден")
 
 
     if not company:
@@ -91,7 +93,8 @@ async def update_company(company_id: str, company_to_update: CompanySave, sessio
         raise HTTPException(status_code=400, detail="Компания с таким названием уже существует.")
     try:
         company.name = company_to_update.name
-        company.hr_id = hr.id
+        if hr:
+            company.hr_id = hr.id
 
         session.add(company)
         await session.commit()
@@ -107,7 +110,7 @@ async def delete_company(company_id: str, session: AsyncSession):
     query = select(Company).where(Company.id == company_id)
     query = cast(Select[Company], query)
     result = await session.exec(query)
-    company = result.scalar_one_or_none()
+    company = result.first()
     if not company:
         await session.rollback()
         raise HTTPException(status_code=404, detail="Компания не найдена.")

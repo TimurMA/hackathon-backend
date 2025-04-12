@@ -17,7 +17,7 @@ class CompanyPublic(CompanyBase):
             id=company.id.hex,
             name=company.name,
             hr_id=company.hr_id,
-            vacancies=list(map(VacancyPublic.init_scheme, company.company_vacancy))
+            vacancies=list(map(VacancyPublic.init_scheme, company.vacancies))
         )
 
 class CompanySave(CompanyBase):

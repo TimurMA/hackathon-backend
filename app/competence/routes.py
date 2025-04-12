@@ -11,15 +11,13 @@ competence_router = APIRouter(
     tags=["Competence"]
 )
 
+@competence_router.get("/all")
+async def get_all_competence_async(session: Session, skill_filter: CompetenceFilter = FilterDepends(CompetenceFilter)) -> Sequence[CompetencePublic]:
+    return await get_all_competence(session, skill_filter)
 
 @competence_router.get("/{competence_id}")
 async def get_competence_by_id_async(competence_id: str, session: Session) -> CompetencePublic:
     return await get_competence_by_id(competence_id, session)
-
-
-@competence_router.get("/all")
-async def get_all_competence_async(session: Session, skill_filter: CompetenceFilter = FilterDepends(CompetenceFilter)) -> Sequence[CompetencePublic]:
-    return await get_all_competence(session, skill_filter)
 
 
 @competence_router.post("/add")
