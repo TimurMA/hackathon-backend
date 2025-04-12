@@ -23,6 +23,8 @@ services:
     image: mta2003/competence-sync-backend:latest
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     depends_on:
       competence-sync-db:
         condition: service_completed_successfully
