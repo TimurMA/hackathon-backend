@@ -26,6 +26,11 @@ async def create_vacancy_async(vacancy: VacancySave, session: Session) -> Vacanc
 async def update_vacancy_async(vacancy_id: str, vacancy: VacancySave, session: Session) -> VacancyPublic:
     return await update_vacancy(vacancy_id, vacancy, session)
 
-@vacancy_router.delete("/{vacancy_id}")
+
+@vacancy_router.put("/update/competence/{vacancy_id}")
+async def update_vacancy_async(vacancy_id: str, vacancy_competence: Sequence[VacancyCompetenceSave],session: Session) -> VacancyPublic:
+    return await update_vacancy_competencies(vacancy_id, vacancy_competence, session)
+
+@vacancy_router.delete("/delete/{vacancy_id}")
 async def delete_vacancy_async(vacancy_id: str, session: Session):
     return await delete_vacancy(vacancy_id, session)

@@ -30,6 +30,6 @@ async def update_competence_async(competence_id: str, competence: CompetenceSave
     return await update_competence(competence_id, competence, session)
 
 
-@competence_router.delete("delete/{competence_id}")
+@competence_router.delete("/delete/{competence_id}")
 async def delete_competence_async(competence_id: str, session: Session):
     return await delete_competence(competence_id, session)
