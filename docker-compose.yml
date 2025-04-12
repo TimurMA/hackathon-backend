@@ -1,4 +1,5 @@
 version: "3.8"
+name: competence-sync
 
 services:
   competence-sync-db:
@@ -9,12 +10,8 @@ services:
       - .env
     volumes:
       - pgdata:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
     healthcheck:
-      test: [ "CMD-SHELL", "pgisready -U ${DB_USER} -d ${DB_NAME}" ]
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -27,7 +24,7 @@ services:
       - .env
     depends_on:
       competence-sync-db:
-        condition: service_completed_successfully
+        condition: service_healthy
 
 volumes:
   pgdata:

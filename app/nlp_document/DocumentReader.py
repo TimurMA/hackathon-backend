@@ -30,7 +30,7 @@ class DocumentReader:
             "EMAIL":[],
             "URL":[]
         }
-        matcher = Matcher(self.nlp.nlp.vocab)
+        matcher = Matcher(self.nlp.vocab)
         # регулярки для нахождения доп данных, массивы с вариантами регулярок для одного случая
         email_patterns = [
             [{"TEXT": {"REGEX": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"}}]

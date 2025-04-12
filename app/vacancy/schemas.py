@@ -5,6 +5,7 @@ from fastapi_filter.contrib.sqlalchemy import Filter
 from fastapi_filter import FilterDepends, with_prefix
 from sqlmodel import SQLModel
 
+from app.company.models import Company
 from app.competence.models import CompetenceBase
 from app.vacancy.models import Location, LocationBase, VacancyBase, Vacancy, VacancyCompetence, CompetenceLevel
 
@@ -87,6 +88,12 @@ class VacancyPublic(VacancyBase):
             vacancy_competencies = list(map(VacancyCompetencePublic.init_scheme, vacancy.vacancy_competencies))
         )
  
+class CompanyFilter(Filter):
+    id: str | None = None
+    name: str | None = None
+    hr_id: str | None = None
+    class Constants(Filter.Constants):
+        model = Company
 
 
 class LocationFilter(Filter):
@@ -94,14 +101,14 @@ class LocationFilter(Filter):
     country: str | None = None
     region: str | None = None
     city: str | None = None
-    
+
     class Constants(Filter.Constants):
-        model = Location 
-        
-        
+        model = Location
+
+
 class VacancyFilter(Filter):
     id: str | None = None
     location: LocationFilter | None = FilterDepends(with_prefix("location", LocationFilter))
-    
+    company: CompanyFilter | None = FilterDepends(with_prefix('company', CompanyFilter))
     class Constants(Filter.Constants):
         model = Vacancy
