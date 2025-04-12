@@ -1,6 +1,7 @@
+import logging
 from decimal import Decimal
 from typing import Sequence
-
+from fastapi import HTTPException
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -19,7 +20,11 @@ async def save_resume_and_get_vacancies(file: bytes,
     competencies = await session.exec(select(Competence))
     competencies_ids = [competence.id for competence in competencies.all()]
 
-    generic_info = nlp.read_document(file, competencies_ids)
+    try:
+        generic_info = nlp.read_document(file, competencies_ids)
+    except Exception as e:
+        logging.error(e)
+        raise HTTPException(status_code=500, detail="Some error occurred reading your resume!")
 
     competencies_info = generic_info[0]
     resume_info = generic_info[1]
@@ -47,7 +52,7 @@ async def save_resume_and_get_vacancies(file: bytes,
 
     await session.refresh(resume)
 
-    resume_competencies = resume.competencies
+    resume_competencies = resume.resume_competencies
 
     query = select(Vacancy)
     vacancies = await session.exec(query)
