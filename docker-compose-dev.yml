@@ -1,0 +1,30 @@
+version: "3.8"
+name: competence-sync-dev
+
+services:
+  competence-sync-db:
+    image: postgres:latest
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  competence-sync-backend:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      competence-sync-db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
