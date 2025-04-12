@@ -12,9 +12,9 @@ resume_router = APIRouter(
 @resume_router.post('/add')
 async def save_resume_info_and_get_vacancies(session: Session,
                                              nlp: Reader,
-                                             file: UploadFile = File(),
-                                             user_info: str = Form(alias_priority="userInfo")
+                                             file: UploadFile = File(...),
+                                             user_info: str = Form(...)
                                              ) -> Sequence[VacancyPublic]:
-    doc = await file.read()
+    b =  await file.read()
     resume_to_save = ResumeSave.model_validate_json(user_info)
-    return await save_resume_and_get_vacancies(doc, resume_to_save, session, nlp)
+    return await save_resume_and_get_vacancies(b, resume_to_save, session, nlp)

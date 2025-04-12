@@ -19,7 +19,7 @@ class DocumentReader:
     def read_document(self, document: bytes, competence_list: list[str]):
         # Загрузка документа в spaCy
         content=""
-        buf = BytesIO(document.read())
+        buf = BytesIO(document)
         header = buf.getvalue()[:8]
         # если файл pdf
         if header.startswith(b'%PDF-'):
@@ -68,5 +68,5 @@ class DocumentReader:
         matcher.add("URL", url_patterns)
         matches = matcher(doc)
         for match_id, start, end in matches:
-            info[self.nlp.nlp.vocab.strings[match_id]].append(doc[start:end].text)
+            info[self.nlp.vocab.strings[match_id]].append(doc[start:end].text)
         return [competences,info]
