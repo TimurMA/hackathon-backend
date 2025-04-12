@@ -25,7 +25,6 @@ class CompanySave(CompanyBase):
     def to_entity(self):
         return Company(
             name=self.name,
-            hr_id=self.hr_id
         )
 
 
