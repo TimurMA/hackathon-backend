@@ -1,11 +1,11 @@
 from utils.get_env_param import get_env_param
 
-DB_USER = get_env_param("DB_USER")
-DB_PASS = get_env_param("DB_PASSWORD")
-DB_NAME = get_env_param("DB_NAME")
-DB_PORT = get_env_param("DB_PORT")
-DB_HOST = get_env_param("DB_HOST")
+POSTGRES_USER = get_env_param("POSTGRES_USER")
+POSTGRES_PASSWORD = get_env_param("POSTGRES_PASSWORD")
+POSTGRES_DB = get_env_param("POSTGRES_DB")
+POSTGRES_PORT = get_env_param("POSTGRES_PORT")
+POSTGRES_HOST = get_env_param("POSTGRES_HOST")
 
 
 def get_database_url():
-    return f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    return f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"

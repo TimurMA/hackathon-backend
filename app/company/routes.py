@@ -5,7 +5,8 @@ from fastapi_filter import FilterDepends
 
 from app.db import Session
 
-from app.company.schemas import CompanyPublic, CompanyFilter, CompanySave
+from app.company.schemas import CompanyPublic, CompanySave
+from app.vacancy.schemas import CompanyFilter
 from app.company.service import *
 
 company_router = APIRouter(

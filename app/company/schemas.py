@@ -1,14 +1,10 @@
 from fastapi_filter import FilterDepends, with_prefix
 from fastapi_filter.contrib.sqlalchemy import Filter
 
-from app.company.models import CompanyBase, Company, CompanyVacancy
+from app.company.models import CompanyBase, Company
 from app.vacancy.schemas import VacancyPublic
-
 from uuid import UUID
 from typing import Optional
-
-from app.vacancy.schemas import VacancyFilter
-
 
 class CompanyPublic(CompanyBase):
     id: str
@@ -33,10 +29,4 @@ class CompanySave(CompanyBase):
         )
 
 
-class CompanyFilter(Filter):
-    id: str | None = None
-    name: str | None = None
-    hr_id: str | None = None
-    vacancies: VacancyFilter | None = FilterDepends(with_prefix("vacancies", VacancyFilter))
-    class Constants(Filter.Constants):
-        model = Company
+

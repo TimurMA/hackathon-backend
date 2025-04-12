@@ -22,7 +22,7 @@ class Resume(ResumeBase, table=True):
 
 
 
-    resume_competencies: list["ResumeCompetence"] = Relationship(back_populates="competence" ,sa_relationship_kwargs={'lazy': 'selectin'})
+    resume_competencies: list["ResumeCompetence"] = Relationship(back_populates="resume" ,sa_relationship_kwargs={'lazy': 'selectin'})
 
 class ResumeCompetence(CompetenceLevel, table=True):
     __tablename__ = "resume_competence"
@@ -30,8 +30,8 @@ class ResumeCompetence(CompetenceLevel, table=True):
     resume_id: UUID = Field(foreign_key='resumes.id')
     competence_id: str = Field(foreign_key='competencies.id')
 
-    competence: Competence = Relationship(back_populates="resume_competencies",sa_relationship_kwargs={'lazy': 'noload'})
-
+    competence: Competence = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
+    resume: Resume = Relationship(back_populates="resume_competencies", sa_relationship_kwargs={'lazy': 'noload'})
 
     __table_args__ = (
         PrimaryKeyConstraint("resume_id", "competence_id", name="resume_competence_pk"),

@@ -3,7 +3,6 @@ from typing import Sequence
 
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
-from docling_core.types.doc.document import DoclingDocument
 
 from app.competence.models import Competence
 from app.nlp_document.DocumentReader import DocumentReader

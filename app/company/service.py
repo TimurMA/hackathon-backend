@@ -7,9 +7,9 @@ from sqlmodel import select, cast, and_
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.company.models import Company
-from app.company.schemas import CompanyPublic, CompanyFilter, CompanySave
+from app.company.schemas import CompanyPublic, CompanySave
 from app.user.models import User
-from app.vacancy.models import Vacancy
+from app.vacancy.schemas import CompanyFilter
 
 async def get_company_by_id(company_id: str, session: AsyncSession) -> CompanyPublic:
     query = select(Company).where(Company.id == company_id)
