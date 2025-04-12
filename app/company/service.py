@@ -37,14 +37,24 @@ async def add_company(company_to_save: CompanySave, session: AsyncSession) -> Co
     if existing_company.first():
         await session.rollback()
         raise HTTPException(status_code=400, detail="Компания с таким названием уже существует.")
+
+    hr = None
+    if company_to_save.hr_id is not None:
+        try:
+            hr = await session.get(User, {"id": company_to_save.hr_id})
+        except Exception as e:
+            logging.error(e)
+            raise HTTPException(status_code=400, detail="Bad hr_id")
+
+    if hr is None:
+        raise HTTPException(status_code=404, detail="HR не найден")
+
     try:
+
         company = company_to_save.to_entity()
-        if company_to_save.hr_id:
-            hr = await session.get(User, company_to_save.hr_id)
-            if not hr:
-                await session.rollback()
-                raise HTTPException(status_code=404, detail="Пользователь не найден.")
-            company.HR = hr
+
+        company.hr_id = hr.id
+
         session.add(company)
         await session.commit()
         await session.refresh(company)
@@ -60,6 +70,19 @@ async def update_company(company_id: str, company_to_update: CompanySave, sessio
     query = cast(Select[Company], query)
     result = await session.exec(query)
     company = result.scalar_one_or_none()
+
+    hr: User | None = None
+    if company_to_update.hr_id is not None:
+        try:
+            hr = await session.get(User, {"id": company_to_update.hr_id})
+        except Exception as e:
+            logging.error(e)
+            raise HTTPException(status_code=400, detail="Bad hr Id")
+
+    if hr is None:
+        raise HTTPException(status_code=404, detail="HR не найден")
+
+
     if not company:
         await session.rollback()
         raise HTTPException(status_code=404, detail="Компания не найдена.")
@@ -68,14 +91,8 @@ async def update_company(company_id: str, company_to_update: CompanySave, sessio
         raise HTTPException(status_code=400, detail="Компания с таким названием уже существует.")
     try:
         company.name = company_to_update.name
-        if company_to_update.hr_id:
-            hr = await session.get(User, company_to_update.hr_id)
-            if not hr:
-                await session.rollback()
-                raise HTTPException(status_code=404, detail="Пользователь не найден.")
-            company.HR = hr
-        else:
-            company.HR = None
+        company.hr_id = hr.id
+
         session.add(company)
         await session.commit()
         await session.refresh(company)
