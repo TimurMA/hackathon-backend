@@ -1,15 +1,17 @@
 from spacy.matcher import Matcher
 from spacy import load
 import pdfplumber
+from docx import Document
 # Зависимости, которых может и не быть
-# pip install spacy-layout
+# pip install pdfplumber
+# pip install docx
 ################################################################
 # СИНГТОН
 # Он такой один, иначе мы умрем
 class DocumentReader:
     def __init__(self):
         #загрузка модели
-        self.nlp = load("app/nlp_document/model/model-best")
+        self.nlp = load("app/nlp_document/model/model-last")
     # Метод для чтения информации с документа, возвращает два словаря, первый компетенции, второй доп. информация
     def read_document(self, document: bytes, competence_list: list[str]):
         # Загрузка документа в spaCy
