@@ -1,24 +1,44 @@
 from spacy.matcher import Matcher
 from spacy import load
 import pdfplumber
+from docx import Document
+from io import BytesIO
+import zipfile
+import logging
 # Зависимости, которых может и не быть
-# pip install spacy-layout
+# pip install pdfplumber
+# pip install docx
 ################################################################
 # СИНГТОН
 # Он такой один, иначе мы умрем
 class DocumentReader:
     def __init__(self):
         #загрузка модели
-        self.nlp = load("app/nlp_document/model/model-best")
+        self.nlp = load("app/nlp_document/model/model-last")
     # Метод для чтения информации с документа, возвращает два словаря, первый компетенции, второй доп. информация
     def read_document(self, document: bytes, competence_list: list[str]):
         # Загрузка документа в spaCy
-        with pdfplumber.open(document) as pdf:
-            text = []
-            for page in pdf.pages:
-                text.append(page.extract_text() or "")
+        content=""
+        buf = BytesIO(document.read())
+        header = buf.getvalue()[:8]
+        # если файл pdf
+        if header.startswith(b'%PDF-'):
+            with pdfplumber.open(buf) as pdf:
+                text = []
+                for page in pdf.pages:
+                    text.append(page.extract_text() or "")
+                content="\n".join(text)
+        # если файл docx
+        elif header.startswith(b'PK\x03\x04'):
+            with zipfile.ZipFile(buf, 'r') as zip_file:
+                if 'word/document.xml' in zip_file.namelist():
+                    buf.seek(0)
+                    doc = Document(buf)
+                    content="\n".join([paragraph.text for paragraph in doc.paragraphs])
+        else:
+            raise Exception("Invalid file!")
 
-        doc = self.nlp("\n".join(text))
+        doc = self.nlp(content)
         # Нахождение всех компетенций в документе
         competences={}
         for token in doc.ents:
