@@ -25,6 +25,10 @@ ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+ENV TZ="Asia/Yekaterinburg"
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+
 
 EXPOSE 8080
 

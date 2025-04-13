@@ -6,12 +6,12 @@ from fastapi_filter.contrib.sqlalchemy import Filter
 class CompetenceSave(CompetenceBase):
     def to_entity(self):
         return Competence(
-            name = self.name
+            name = self.name,
+            id = self.id
         )
 
 
 class CompetencePublic(CompetenceBase):
-    id: str
     @staticmethod
     def init_scheme(competence: Competence):
         competence_id = competence.id
