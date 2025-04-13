@@ -53,25 +53,27 @@ async def create_vacancy(vacancy_to_save: VacancySave, session: AsyncSession) ->
         
         vacancy = vacancy_to_save.to_entity()
         vacancy.location_id = location.id
-        vacancy.location = location
-        for competence in vacancy.vacancy_competencies:
-            try:
-                session.add(competence)
-                await session.commit()
-            except Exception as e:
-                logging.error(e)
-
 
         session.add(vacancy)
         await session.commit()
         await session.refresh(vacancy)
-        
+        logging.info(vacancy)
+        vacancy_competencies = [vacancy_competence.to_entity(vacancy.id.hex) for vacancy_competence in
+                                vacancy_to_save.vacancy_competencies]
+        session.add_all(vacancy_competencies)
+        await session.commit()
+        for vc in vacancy_competencies:
+            await session.refresh(vc)
+
+        vacancy.vacancy_competencies = vacancy_competencies
         return VacancyPublic.init_scheme(vacancy)
+
     except Exception as e:
         await session.rollback()
         logging.error(e)
         raise HTTPException(status_code=500, detail="Error occurred while saving vacancy! " +
                                                     "Please inform administration or try later")
+
 
 async def update_vacancy_competencies(vacancy_id: str,
                                       vacancy_competencies_to_save: Sequence[VacancyCompetenceSave],
@@ -107,8 +109,8 @@ async def update_vacancy(vacancy_id: str, vacancy_to_update: VacancySave, sessio
     statement = select(Vacancy).where(Vacancy.id == vacancy_id).outerjoin(Location)
 
     vacancy = await session.exec(statement)
-    vacancy = vacancy.one()
-    print(vacancy)
+    vacancy = vacancy.first()
+
     if vacancy is None:
         await session.rollback()
         raise HTTPException(status_code=404, detail="Not Found!")

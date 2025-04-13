@@ -3,7 +3,7 @@ from uuid import UUID
 
 from fastapi_filter.contrib.sqlalchemy import Filter
 from fastapi_filter import FilterDepends, with_prefix
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel, Field
 
 from app.company.models import Company
 from app.competence.models import CompetenceBase
@@ -42,7 +42,7 @@ class VacancyCompetenceSave(SQLModel):
 
 class VacancyCompetencePublic(CompetenceLevel, CompetenceBase):
     competence_id: str
-    user_id: str
+    vacancy_id: str
 
     @staticmethod
     def init_scheme(vacancy_competence: VacancyCompetence):
@@ -56,14 +56,13 @@ class VacancyCompetencePublic(CompetenceLevel, CompetenceBase):
 class VacancySave(VacancyBase):
     location: LocationSave
     company_id: str
-    vacancy_competencies: list[VacancyCompetenceSave] = []
+    vacancy_competencies: list[VacancyCompetenceSave] = Field(default=list)
     def to_entity(self):
         return Vacancy(
             name = self.name,
             description = self.description,
             url = self.url,
-            company_id = self.company_id,
-            vacancy_competencies = [vacancy_competence.to_entity() for vacancy_competence in self.vacancy_competencies]
+            company_id = UUID(self.company_id),
         )
     
 
@@ -82,8 +81,8 @@ class VacancyPublic(VacancyBase):
             name = vacancy.name,
             description = vacancy.description,
             url = vacancy.url,
-            location_id = vacancy.location_id,
-            company_id = vacancy.id,
+            location_id = vacancy.location_id.hex,
+            company_id = vacancy.company_id.hex,
             location = LocationPublic.init_scheme(vacancy.location),
             vacancy_competencies = list(map(VacancyCompetencePublic.init_scheme, vacancy.vacancy_competencies))
         )
