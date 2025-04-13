@@ -4,21 +4,21 @@ from fastapi_filter.contrib.sqlalchemy import Filter
 
 
 class CompetenceSave(CompetenceBase):
+    id: str
     def to_entity(self):
         return Competence(
-            name = self.name,
-            id = self.id
+            name=self.name,
+            id=self.id
         )
 
 
 class CompetencePublic(CompetenceBase):
+    id: str
     @staticmethod
     def init_scheme(competence: Competence):
-        competence_id = competence.id
-        name = competence.name,
         return CompetencePublic(
-            id=competence_id,
-            name=name
+            id=competence.id,
+            name=competence.name
         )
 
 class CompetenceFilter(Filter):

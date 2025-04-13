@@ -16,7 +16,7 @@ async def get_competence_by_id(skill_id: str, session: AsyncSession) -> Competen
 
     result = await session.exec(query)
 
-    competence = result.scalar_one_or_none()
+    competence = result.first()
     if not competence:
         raise HTTPException(status_code=404, detail="По результатам запроса ничего не было найдено.")
     return CompetencePublic.init_scheme(competence)
@@ -69,7 +69,7 @@ async def update_competence(competence_id: str,
         query = select(Competence).where(Competence.name == competence_to_update.name)
         query = cast(Select[Competence], query)
         existing_competence = await session.exec(query)
-        if existing_competence.scalar_one_or_none():
+        if existing_competence.first():
             await session.rollback()
             raise HTTPException(status_code=400, detail="Такая компетенция уже существует.")
 
