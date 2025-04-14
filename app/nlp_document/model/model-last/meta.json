@@ -58,127 +58,127 @@
 
   ],
   "performance":{
-    "ents_f":0.7384155456,
-    "ents_p":0.769470405,
-    "ents_r":0.7097701149,
+    "ents_f":0.747099768,
+    "ents_p":0.7777777778,
+    "ents_r":0.71875,
     "ents_per_type":{
-      "reinforcement learning":{
-        "p":0.8125,
-        "r":0.619047619,
-        "f":0.7027027027
-      },
-      "NLP":{
-        "p":0.7058823529,
-        "r":0.5217391304,
-        "f":0.6
-      },
-      "information search":{
-        "p":0.7368421053,
-        "r":0.6666666667,
-        "f":0.7
-      },
-      "Programming language":{
-        "p":0.8823529412,
-        "r":0.8823529412,
-        "f":0.8823529412
-      },
-      "ML for generation image and video":{
-        "p":0.8333333333,
-        "r":0.8333333333,
-        "f":0.8333333333
-      },
-      "recommendation systems":{
-        "p":0.9259259259,
-        "r":0.9615384615,
-        "f":0.9433962264
-      },
-      "Image and video analysis":{
-        "p":0.7777777778,
+      "the basics of deep learning":{
+        "p":1.0,
         "r":0.875,
-        "f":0.8235294118
-      },
-      "statistical methods":{
-        "p":0.4375,
-        "r":0.3181818182,
-        "f":0.3684210526
-      },
-      "optimization methods":{
-        "p":0.9375,
-        "r":0.9375,
-        "f":0.9375
-      },
-      "ML methods":{
-        "p":0.75,
-        "r":0.8108108108,
-        "f":0.7792207792
-      },
-      "methodology for developing AI solutions":{
-        "p":0.5625,
-        "r":0.375,
-        "f":0.45
+        "f":0.9333333333
       },
       "data preprocessing":{
-        "p":0.4444444444,
-        "r":0.1818181818,
-        "f":0.2580645161
-      },
-      "working with a distributed cluster system":{
-        "p":0.5625,
-        "r":0.9,
-        "f":0.6923076923
-      },
-      "ML on big data":{
-        "p":0.4444444444,
-        "r":0.5,
-        "f":0.4705882353
-      },
-      "SQL":{
-        "p":1.0,
-        "r":1.0,
-        "f":1.0
+        "p":0.5384615385,
+        "r":0.4375,
+        "f":0.4827586207
       },
       "parallel processing":{
-        "p":1.0,
+        "p":0.6,
+        "r":0.5,
+        "f":0.5454545455
+      },
+      "Hadoop":{
+        "p":0.8888888889,
         "r":1.0,
-        "f":1.0
+        "f":0.9411764706
       },
-      "data streaming":{
-        "p":0.8333333333,
-        "r":0.8333333333,
-        "f":0.8333333333
-      },
-      "the basics of deep learning":{
-        "p":0.6666666667,
-        "r":0.6666666667,
-        "f":0.6666666667
-      },
-      "ML for generation natural language":{
+      "reinforcement learning":{
         "p":0.8181818182,
         "r":1.0,
         "f":0.9
+      },
+      "optimization methods":{
+        "p":1.0,
+        "r":0.6,
+        "f":0.75
+      },
+      "recommendation systems":{
+        "p":0.9444444444,
+        "r":1.0,
+        "f":0.9714285714
+      },
+      "methodology for developing AI solutions":{
+        "p":0.6923076923,
+        "r":0.5625,
+        "f":0.6206896552
+      },
+      "ML methods":{
+        "p":0.6923076923,
+        "r":0.7826086957,
+        "f":0.7346938776
+      },
+      "ML for generation natural language":{
+        "p":1.0,
+        "r":1.0,
+        "f":1.0
+      },
+      "NLP":{
+        "p":0.7272727273,
+        "r":0.7272727273,
+        "f":0.7272727273
+      },
+      "evaluating the work of AI methods":{
+        "p":0.6,
+        "r":0.5,
+        "f":0.5454545455
+      },
+      "data streaming":{
+        "p":0.8,
+        "r":0.6666666667,
+        "f":0.7272727273
+      },
+      "ML on big data":{
+        "p":0.75,
+        "r":0.2727272727,
+        "f":0.4
+      },
+      "ML for generation image and video":{
+        "p":0.5,
+        "r":1.0,
+        "f":0.6666666667
+      },
+      "information search":{
+        "p":0.6153846154,
+        "r":0.5714285714,
+        "f":0.5925925926
+      },
+      "Image and video analysis":{
+        "p":0.5555555556,
+        "r":0.5555555556,
+        "f":0.5555555556
+      },
+      "Programming language":{
+        "p":0.9090909091,
+        "r":0.7142857143,
+        "f":0.8
+      },
+      "SQL":{
+        "p":1.0,
+        "r":0.9,
+        "f":0.9473684211
+      },
+      "working with a distributed cluster system":{
+        "p":1.0,
+        "r":0.8333333333,
+        "f":0.9090909091
+      },
+      "statistical methods":{
+        "p":0.3333333333,
+        "r":0.3333333333,
+        "f":0.3333333333
+      },
+      "parallel computing to speed up ML":{
+        "p":1.0,
+        "r":0.7777777778,
+        "f":0.875
       },
       "NoSQL":{
         "p":1.0,
         "r":1.0,
         "f":1.0
-      },
-      "Hadoop":{
-        "p":1.0,
-        "r":0.8888888889,
-        "f":0.9411764706
-      },
-      "parallel computing to speed up ML":{
-        "p":1.0,
-        "r":0.8571428571,
-        "f":0.9230769231
-      },
-      "evaluating the work of AI methods":{
-        "p":0.8,
-        "r":0.8,
-        "f":0.8
       }
     },
-    "tok2vec_loss":1248.8740145761,
-    "ner_loss":342.1309182702
+    "tok2vec_loss":783.2108884476,
+    "ner_loss":418.9589691577
   }
 }
