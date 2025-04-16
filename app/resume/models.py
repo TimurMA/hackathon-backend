@@ -3,8 +3,7 @@ from sqlmodel import SQLModel, Field, Relationship
 from uuid import UUID, uuid4
 
 from app.competence.models import CompetenceLevel, Competence
-
-
+from app.vacancy.models import Vacancy
 
 
 class ResumeBase(SQLModel):
@@ -19,9 +18,9 @@ class Resume(ResumeBase, table=True):
     __tablename__ = "resumes"
 
     id: UUID = Field(default_factory=uuid4, primary_key=True)
+    vacancy_id: UUID | None = Field(foreign_key='vacancies.id', nullable=True, default=None)
 
-
-
+    vacancy: Vacancy | None = Relationship(sa_relationship_kwargs={"lazy": "selectin"})
     resume_competencies: list["ResumeCompetence"] = Relationship(back_populates="resume" ,sa_relationship_kwargs={'lazy': 'selectin'})
 
 class ResumeCompetence(CompetenceLevel, table=True):
