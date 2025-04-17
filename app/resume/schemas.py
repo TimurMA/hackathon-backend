@@ -16,7 +16,7 @@ class ResumeCompetencePublic(CompetenceLevel):
             id = resume_competence.competence_id,
             name = resume_competence.competence.name,
             level = resume_competence.level,
-            resume_id = resume_competence.resume_id
+            resume_id = resume_competence.resume_id.hex
         )
 
 class ResumePublic(ResumeBase):

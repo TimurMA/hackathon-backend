@@ -20,6 +20,6 @@ async def read_resume(session: Session,
     resume_to_save = ResumeSave.model_validate_json(user_info)
     return await save_resume_and_send_to_confirm_competencies_and_info(b, resume_to_save, session, nlp)
 
-@resume_router.put('confirm')
+@resume_router.put('/confirm')
 async def confirm_resume(session: Session, resume_to_confirm: ResumeConfirm) -> Sequence[VacancyPublic]:
     return confirm_resume_and_send_vacancies(session, resume_to_confirm)

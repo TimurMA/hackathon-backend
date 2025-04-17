@@ -29,7 +29,7 @@ class ResumeCompetence(CompetenceLevel, table=True):
     resume_id: UUID = Field(foreign_key='resumes.id')
     competence_id: str = Field(foreign_key='competencies.id')
 
-    competence: Competence = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
+    competence: Competence = Relationship(sa_relationship_kwargs={'lazy': 'joined'})
     resume: Resume = Relationship(back_populates="resume_competencies", sa_relationship_kwargs={'lazy': 'noload'})
 
     __table_args__ = (
