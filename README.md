@@ -29,7 +29,7 @@ alembic upgrade head
 #### Запустить веб сервер:
 
 ```
-uvicorn app.main:app --reload --port=8080
+uvicorn app.main:app --reload --port=8000
 ```
 
-locahost:8080/docs - Свагер
+locahost:8000/docs - Свагер
