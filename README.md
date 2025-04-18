@@ -13,7 +13,7 @@ docker compose up -d
 ```
 docker compose -f docker-compose-dev.yml up -d
 ```
-### Для откладки:
+### Для отладки:
 
 #### Запустить контейнер с postgres:
 
