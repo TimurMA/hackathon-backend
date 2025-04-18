@@ -101,9 +101,15 @@ async def init_company_with_vacancies():
             except Exception as e:
                 logging.error(e)
 
+    vc = []
+
     for location_id in location_ids:
-        for vacancy in vacancy_list:
-            vc = vacancy.vacancy_competencies
+        for vacancy_dict in vacancy_list:
+            vacancy = Vacancy(
+                name = vacancy_dict.get("name"),
+                url=vacancy_dict.get("url"),
+                description=vacancy_dict.get("description"),
+            )
             vacancy.company_id = company_id
             vacancy.location_id = location_id
 
@@ -120,12 +126,13 @@ async def init_company_with_vacancies():
                 try:
                     session.add(vacancy)
                     await session.commit()
-                    await session.rollback()
+                    await session.refresh(vacancy)
                 except Exception as e:
                     logging.error(e)
             else:
                 vacancy = current_vacancy
-            for competence in vc:
+
+            for competence in vacancy_dict.get("vacancy_competencies"):
                 try:
                     competence.vacancy_id = vacancy.id
                     session.add(competence)

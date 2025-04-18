@@ -50,10 +50,9 @@ company = Company(
 )
 
 vacancy_list = [
-    #надо будет добавлять еще поля в будущем(ЗП, график работы), не сейчас
-    Vacancy(
-        name = 'Аналитик данных',
-        description =   '''
+    {
+        'name': 'Аналитик данных',
+        'description':   '''
                         Специалист, который работает с данными компании, анализирует их и разрабатывает решения на основе ИИ.
                         Совместно с техническими аналитиками формирует технические метрики, которые зависят от бизнес-метрик.
                         В процессе выполнения проекта специалист:
@@ -62,8 +61,8 @@ vacancy_list = [
                             - Реализует общий пайплайн решения
                             - Формирует техническую часть документации проекта
                         ''',
-        url = 'https://www.sberbank.com/ru',
-        vacancy_competencies = [
+        'url': 'https://www.sberbank.com/ru',
+        'vacancy_competencies': [
             VacancyCompetence(competence_id = "methodology for developing Al solutions", level = Decimal('7')),
             VacancyCompetence(competence_id = "statistical methods", level = Decimal('7')),
             VacancyCompetence(competence_id = "evaluating the work of Al methods", level = Decimal('7')),
@@ -86,16 +85,16 @@ vacancy_list = [
             VacancyCompetence(competence_id = "parallel processing", level = Decimal('4.5')),
             VacancyCompetence(competence_id = "data preprocessing", level = Decimal('4.5'))
         ]
-    ),
-    Vacancy(
-        name = 'Инженер данных',
-        description =   '''
+    },
+    {
+        'name': 'Инженер данных',
+        'description':   '''
                         Специалист, который отвечает за сбор, анализ, очистку и подготовку данных для последующего
                         использования. Работает с системами хранения и анализа данных, обеспечивая их эффективное
                         функционирование, а также поддержку систем версионирования данных.
                         ''',
-        url = 'https://www.sberbank.com/ru',
-        vacancy_competencies = [
+        'url': 'https://www.sberbank.com/ru',
+        'vacancy_competencies': [
             VacancyCompetence(competence_id = "methodology for developing Al solutions", level = Decimal('7')),
             VacancyCompetence(competence_id = "statistical methods", level = Decimal('4.5')),
             VacancyCompetence(competence_id = "evaluating the work of Al methods", level = Decimal('4.5')),
@@ -118,18 +117,18 @@ vacancy_list = [
             VacancyCompetence(competence_id = "parallel processing", level = Decimal('7')),
             VacancyCompetence(competence_id = "data preprocessing", level = Decimal('9'))
         ]
-    ),
-    Vacancy(
-        name = 'Технический аналитик в ИИ',
-        description =   '''
+    },
+    {
+        'name': 'Технический аналитик в ИИ',
+        'description':  '''
                         Специалист, который обеспечивает эффективное взаимодействие между аналитиком данных и заказчиком.
                         Анализирует потребности бизнеса, подтверждает и уточняет проблематику, анализирует бизнес-процессы и
                         выявляет ключевые артефакты данных в них. Также специалист оценивает техническую реализуемость
                         запроса, формализует техническое задание, и в дальнейшем может участвовать в документировании
                         результатов экспериментов и итогового тестирования.
                         ''',
-        url = 'https://www.sberbank.com/ru',
-        vacancy_competencies = [
+        'url': 'https://www.sberbank.com/ru',
+        'vacancy_competencies':  [
             VacancyCompetence(competence_id = "methodology for developing Al solutions", level = Decimal('4.5')),
             VacancyCompetence(competence_id = "statistical methods", level = Decimal('4.5')),
             VacancyCompetence(competence_id = "evaluating the work of Al methods", level = Decimal('4.5')),
@@ -145,16 +144,16 @@ vacancy_list = [
             VacancyCompetence(competence_id = "NoSQL", level = Decimal('4.5')),
             VacancyCompetence(competence_id = "data preprocessing", level = Decimal('4.5'))
         ]
-    ),
-    Vacancy(
-        name = 'Менеджер в ИИ',
-        description =   '''
+    },
+    {
+        'name': 'Менеджер в ИИ',
+        'description':   '''
                         Специалист, который обеспечивает общее выполнение проекта, работу по бюджету, ресурсам, срокам. 
                         Отвечает за конверсию и вывод решений в продуктив на организационном уровне. Также в круг его
                         обязанностей может входить обработка пользовательских отзывов и части документирования продукта.
                         ''',
-        url = 'https://www.sberbank.com/ru',
-        vacancy_competencies = [
+        'url': 'https://www.sberbank.com/ru',
+        'vacancy_competencies': [
             VacancyCompetence(competence_id = "methodology for developing Al solutions", level = Decimal('4.5')),
             VacancyCompetence(competence_id = "evaluating the work of Al methods", level = Decimal('4.5')),
             VacancyCompetence(competence_id = "ML methods", level = Decimal('4.5')),
@@ -167,7 +166,7 @@ vacancy_list = [
             VacancyCompetence(competence_id = "NoSQL", level = Decimal('4.5')),
             VacancyCompetence(competence_id = "data preprocessing", level = Decimal('4.5'))
         ]
-    ),
+    },
 ]
 
 competence_contiguity_list = [
