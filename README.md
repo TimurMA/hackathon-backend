@@ -4,14 +4,14 @@ cd skillsync-backend
 ```
 
 ### Запустить контейнер с postgres и бэкендом:
+(с докерхаба)
+```
+docker compose up -d
+```
+или (с докерфаила)
 
 ```
-docker compose up -d (с докерхаба)
-```
-или
-
-```
-docker compose -f docker-compose-dev.yml up -d (с докерфаила)
+docker compose -f docker-compose-dev.yml up -d
 ```
 
 ### Запустить контейнер с postgres:
