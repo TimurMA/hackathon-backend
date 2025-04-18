@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import ConfigDict
 from sqlmodel import SQLModel
 
-from app.db import init_db, close_connection, init_common_competencies, init_competence_contiguity
+from app.db import init_db, close_connection, init_common_competencies, init_competence_contiguity, init_company_with_vacancies
 from app.company.routes import company_router
 from app.competence.routes import competence_router
 from app.resume.routes import resume_router
@@ -20,6 +20,7 @@ async def lifespan(app: FastAPI):
     init_nlp_module()
     await init_common_competencies()
     await init_competence_contiguity()
+    await init_company_with_vacancies()
     yield
     await close_connection()
 

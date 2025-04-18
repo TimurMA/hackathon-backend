@@ -22,8 +22,8 @@ class ResumeCompetencePublic(CompetenceLevel):
 class ResumePublic(ResumeBase):
     id: str
     resume_competencies: list[ResumeCompetencePublic] = Field(default=[])
-    vacancy_id: str | None
-    vacancy: VacancyPublic | None
+    vacancy_id: str | None = Field(default=None)
+    vacancy: VacancyPublic | None = Field(default=None)
     @staticmethod
     def init_scheme(resume: Resume):
 
@@ -34,7 +34,7 @@ class ResumePublic(ResumeBase):
             emails = resume.emails,
             urls = resume.urls,
             phones = resume.phones,
-            resume_competencies = list(map(ResumeCompetencePublic.init_scheme, resume.competencies))
+            resume_competencies = list(map(ResumeCompetencePublic.init_scheme, resume.resume_competencies))
         )
 
         if resume.vacancy_id:
@@ -62,7 +62,8 @@ class ResumeConfirm(SQLModel):
         for competence in self.resume_competencies:
             resume_competencies.append(ResumeCompetence(
                 resume_id = UUID(self.id),
-                competence_id = competence.id
+                competence_id = competence.id,
+                level = competence.level
             ))
         return resume_competencies
 
