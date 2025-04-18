@@ -22,4 +22,4 @@ async def read_resume(session: Session,
 
 @resume_router.put('/confirm')
 async def confirm_resume(session: Session, resume_to_confirm: ResumeConfirm) -> Sequence[VacancyPublic]:
-    return confirm_resume_and_send_vacancies(session, resume_to_confirm)
+    return await confirm_resume_and_send_vacancies(session, resume_to_confirm)

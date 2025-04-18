@@ -8,7 +8,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.competence.models import Competence, CompetenceContiguity
 from app.nlp_document.DocumentReader import DocumentReader
-from app.resume.models import ResumeCompetence, Resume
+from app.resume.models import Resume
 from app.resume.schemas import ResumeSave, ResumePublic, ResumeCompetencePublic, ResumeConfirm
 from app.vacancy.models import Vacancy
 from app.vacancy.schemas import VacancyPublic
@@ -44,15 +44,17 @@ async def save_resume_and_send_to_confirm_competencies_and_info(file: bytes,
         logging.error(e)
         raise HTTPException(status_code=500, detail="Ошибка! Сообщите администрации или повторите позже")
 
-    resume_competencies = []
-    for (key, val) in competencies_info.items():
-        resume_competence = ResumeCompetencePublic(
-            id = key,
-            name=val,
-            level=float('0'),
-            resume_id=resume.id
-        )
-        resume_competencies.append(resume_competence)
+    keys = competencies_info.keys()
+
+    query = select(Competence).where(col(Competence.id).in_(keys))
+    competencies = await session.exec(query)
+
+    resume_competencies = [ResumeCompetencePublic(
+        id = competence.id,
+        name = competence.name,
+        level = float("0"),
+        resume_id = resume.id.hex
+    ) for competence in competencies.all()]
 
     result = ResumePublic.init_scheme(resume)
     result.resume_competencies = resume_competencies
